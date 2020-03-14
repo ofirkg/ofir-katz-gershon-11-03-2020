@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Skeleton from '@material-ui/lab/Skeleton';
-
-import tempWeatherImage from 'assets/WeatherIcons/01-s.png';
+import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
+import WeatherIcons from 'assets/WeatherIcons/';
 
 const useStyles = makeStyles({
 	root: {
@@ -18,6 +18,7 @@ export default function CurrentWeatherCard({
 	loading,
 	location = '',
 	temperature = '',
+	icon = 0,
 }) {
 	const classes = useStyles();
 	return (
@@ -31,12 +32,14 @@ export default function CurrentWeatherCard({
 							width={40}
 							height={40}
 						/>
-					) : (
+					) : WeatherIcons[icon] ? (
 						<img
-							src={tempWeatherImage}
+							src={WeatherIcons[icon]}
 							alt='image'
 							placeholder='placeholder'
 						/>
+					) : (
+						<ImageOutlinedIcon />
 					)
 				}
 				title={
