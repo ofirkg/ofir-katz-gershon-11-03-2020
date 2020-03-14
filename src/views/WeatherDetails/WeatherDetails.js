@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import CurrentWeatherCard from 'components/CurrentWeatherCard/CurrentWeatherCard';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Paper from '@material-ui/core/Paper';
@@ -189,7 +190,14 @@ export default function WeatherDetails() {
 					<Grid container>
 						<Grid container item xs={12}>
 							<Grid item xs={12} sm={6}>
-								{selectedOption && selectedOption.LocalizedName}
+								{/* {selectedOption && selectedOption.LocalizedName} */}
+								<CurrentWeatherCard
+									loading={false}
+									location={selectedOption.LocalizedName}
+									temperature={
+										currentWeather.Temperature.Metric.Value
+									}
+								/>
 							</Grid>
 							<Grid
 								container
