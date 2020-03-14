@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CurrentWeatherCard from 'components/CurrentWeatherCard/CurrentWeatherCard';
+import DayCard from 'components/DayCard/DayCard';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Paper from '@material-ui/core/Paper';
@@ -76,7 +77,6 @@ export default function WeatherDetails() {
 					}, 3000)
 				);
 				setCurrentWeatherLoading(false);
-				console.log(currentWeatherLoading);
 			} catch (e) {
 				// setLoading(false);
 				setCurrentWeatherLoading(false);
@@ -242,19 +242,21 @@ export default function WeatherDetails() {
 							</p>
 						</Grid>
 						<Grid container item justify='center' xs={12}>
-							{forecast &&
-								forecast.map((day, i) => {
-									return (
-										<Grid
-											item
-											xs={12}
-											sm={6}
-											md={2}
-											key={`day_${i}`}>
-											<Card>{`${day.Temperature.Minimum.Value}/${day.Temperature.Maximum.Value}`}</Card>
-										</Grid>
-									);
-								})}
+							{[...Array(5)].map((_, i) => {
+								return (
+									<Grid
+										item
+										xs={12}
+										sm={6}
+										md={2}
+										key={`day_${i}`}>
+										<DayCard
+											loading={forecastLoading}
+											data={forecast && forecast[i]}
+										/>
+									</Grid>
+								);
+							})}
 						</Grid>
 					</Grid>
 				</Paper>
