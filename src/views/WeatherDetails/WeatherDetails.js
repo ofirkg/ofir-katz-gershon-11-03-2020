@@ -15,14 +15,12 @@ export default function WeatherDetails() {
 	const [open, setOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [options, setOptions] = useState(autoCompleteMock);
-	const [selectedOption, setSelectedOption] = useState(
-		telavivLocationInfoMock[0]
-	);
+	const [selectedOption, setSelectedOption] = useState(null);
+	const [currentWeather, setCurrentWeather] = useState(null);
+	const [forecast, setForecast] = useState(null);
 	const [loading, setLoading] = useState(false);
-	const [currentWeather, setCurrentWeather] = useState(currentWeatherMock);
-	const [forecast, setForecast] = useState(
-		fiveDayForecastMock.DailyForecasts
-	);
+	const [currentWeatherLoading, setCurrentWeatherLoading] = useState(false);
+	const [forecastLoading, setForecastLoading] = useState(false);
 
 	// autocomplete fetch
 	useEffect(() => {
@@ -57,8 +55,8 @@ export default function WeatherDetails() {
 		if (!selectedOption) {
 			return;
 		}
-		// setLoading(true);
-		const source = CancelToken.source();
+		setCurrentWeatherLoading(true);
+		// const source = CancelToken.source();
 		(async () => {
 			try {
 				// const result = await axios({
@@ -71,12 +69,21 @@ export default function WeatherDetails() {
 				// });
 				// setCurrentWeather(result.data[0] || null);
 				// setLoading(false);
+				await new Promise(resolve =>
+					setTimeout(() => {
+						setCurrentWeather(telavivCurrentWeatherMock[0]);
+						resolve();
+					}, 3000)
+				);
+				setCurrentWeatherLoading(false);
+				console.log(currentWeatherLoading);
 			} catch (e) {
-				setLoading(false);
+				// setLoading(false);
+				setCurrentWeatherLoading(false);
 				console.error(e);
 			}
 		})();
-		return () => source.cancel();
+		// return () => source.cancel();
 	}, [selectedOption]);
 
 	// forecast fetch
@@ -84,8 +91,8 @@ export default function WeatherDetails() {
 		if (!selectedOption) {
 			return;
 		}
-		// setLoading(true);
-		const source = CancelToken.source();
+		setForecastLoading(true);
+		// const source = CancelToken.source();
 		(async () => {
 			try {
 				// const result = await axios({
@@ -98,39 +105,53 @@ export default function WeatherDetails() {
 				// });
 				// setCurrentWeather(result.data[0] || null);
 				// setLoading(false);
+				await new Promise(resolve =>
+					setTimeout(() => {
+						setForecast(fiveDayForecastMock.DailyForecasts);
+						resolve();
+					}, 3000)
+				);
+				setForecastLoading(false);
 			} catch (e) {
-				setLoading(false);
+				setForecastLoading(false);
 				console.error(e);
 			}
 		})();
-		return () => source.cancel();
+		// return () => source.cancel();
 	}, [selectedOption]);
 
 	// default weather fetch
 	useEffect(() => {
-		// setLoading(true);
-		const source = CancelToken.source();
-		(async () => {
-			try {
-				// const result = await axios({
-				// 	url: `/currentconditions/v1/${selectedOption.Key}`,
-				// 	method: 'GET',
-				// 	cancelToken: source.token,
-				// 	params: {
-				// 		apikey: 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb',
-				// 	},
-				// });
-				// setCurrentWeather(result.data[0] || null);
+		// setCurrentWeatherLoading(true);
+		// const source = CancelToken.source();
+		setSelectedOption(telavivLocationInfoMock[0]);
+		// (async () => {
+		// 	try {
+		// 		// const result = await axios({
+		// 		// 	url: `/currentconditions/v1/${selectedOption.Key}`,
+		// 		// 	method: 'GET',
+		// 		// 	cancelToken: source.token,
+		// 		// 	params: {
+		// 		// 		apikey: 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb',
+		// 		// 	},
+		// 		// });
+		// 		// setCurrentWeather(result.data[0] || null);
 
-				setCurrentWeather(telavivCurrentWeatherMock[0]);
+		// 				// 		await new Promise(resolve =>
+		// // 			setTimeout(() => {
+		// // 				setSelectedOption(telavivLocationInfoMock[0]);
+		// // 			}, 3000)
+		// // 		);
 
-				// setLoading(false);
-			} catch (e) {
-				setLoading(false);
-				console.error(e);
-			}
-		})();
-		return () => source.cancel();
+		// // 		// setCurrentWeatherLoading(false);
+
+		// 		// setLoading(false);
+		// 	} catch (e) {
+		// 		setCurrentWeatherLoading(false);
+		// 		console.error(e);
+		// 	}
+		// })();
+		// return () => source.cancel();
 	}, []);
 
 	const handleInputChange = (e, term, reason) => {
@@ -190,12 +211,19 @@ export default function WeatherDetails() {
 					<Grid container>
 						<Grid container item xs={12}>
 							<Grid item xs={12} sm={6}>
-								{/* {selectedOption && selectedOption.LocalizedName} */}
 								<CurrentWeatherCard
-									loading={false}
-									location={selectedOption.LocalizedName}
+									loading={currentWeatherLoading}
+									location={
+										selectedOption &&
+										selectedOption.LocalizedName
+									}
 									temperature={
+										currentWeather &&
 										currentWeather.Temperature.Metric.Value
+									}
+									icon={
+										currentWeather &&
+										currentWeather.WeatherIcon
 									}
 								/>
 							</Grid>
