@@ -59,7 +59,7 @@ export default function DayCard({ loading = true, data = defaultData }) {
 					loading ? (
 						<Skeleton
 							animation='wave'
-							height={10}
+							height={32}
 							width='80%'
 							style={{ marginBottom: 6 }}
 						/>
@@ -69,7 +69,7 @@ export default function DayCard({ loading = true, data = defaultData }) {
 				}
 				subheader={
 					loading ? (
-						<Skeleton animation='wave' height={10} width='40%' />
+						<Skeleton animation='wave' height={24} width='40%' />
 					) : (
 						formattedDate
 					)
@@ -82,8 +82,9 @@ export default function DayCard({ loading = true, data = defaultData }) {
 							<Skeleton
 								animation='wave'
 								variant='circle'
-								width={40}
-								height={40}
+								width={50}
+								height={50}
+								style={{ marginRight: '20px' }}
 							/>
 						) : WeatherIcons[dayIcon] ? (
 							<img src={WeatherIcons[dayIcon]} alt={IconPhrase} />
@@ -93,11 +94,18 @@ export default function DayCard({ loading = true, data = defaultData }) {
 					</div>
 					<div className={classes.contentPhrase}>
 						{loading ? (
-							<Skeleton
-								animation='wave'
-								height={10}
-								width='80%'
-							/>
+							<>
+								<Skeleton
+									animation='wave'
+									height={16}
+									width='80%'
+								/>
+								<Skeleton
+									animation='wave'
+									height={16}
+									width='80%'
+								/>
+							</>
 						) : (
 							IconPhrase
 						)}
@@ -106,17 +114,19 @@ export default function DayCard({ loading = true, data = defaultData }) {
 
 				<div className={classes.degrees}>
 					{loading ? (
-						<Skeleton animation='wave' height={10} width='100%' />
+						<Skeleton animation='wave' height={53} width='100%' />
 					) : (
 						<>
 							<Typography variant='h3' component='span'>
-								{data.Temperature.Maximum.Value}&deg;
+								{Math.round(data.Temperature.Maximum.Value)}
+								&deg;
 							</Typography>
 							<Typography
 								color='textSecondary'
 								variant='h5'
 								component='span'>
-								/{data.Temperature.Maximum.Value}&deg;
+								/{Math.round(data.Temperature.Maximum.Value)}
+								&deg;
 							</Typography>
 						</>
 					)}
