@@ -29,8 +29,8 @@ export default function CurrentWeatherCard({
 						<Skeleton
 							animation='wave'
 							variant='circle'
-							width={40}
-							height={40}
+							width={50}
+							height={50}
 						/>
 					) : WeatherIcons[icon] ? (
 						<img src={WeatherIcons[icon]} alt='weatherIcon' />
@@ -42,7 +42,7 @@ export default function CurrentWeatherCard({
 					loading ? (
 						<Skeleton
 							animation='wave'
-							height={10}
+							height={16}
 							width='80%'
 							style={{ marginBottom: 6 }}
 						/>
@@ -52,10 +52,10 @@ export default function CurrentWeatherCard({
 				}
 				subheader={
 					loading ? (
-						<Skeleton animation='wave' height={10} width='40%' />
+						<Skeleton animation='wave' height={14} width='40%' />
 					) : (
 						<Typography variant='subtitle2'>
-							{temperature}&deg;
+							{Math.round(temperature)}&deg;
 						</Typography>
 					)
 				}
