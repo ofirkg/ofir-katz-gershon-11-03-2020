@@ -33,11 +33,7 @@ export default function CurrentWeatherCard({
 							height={40}
 						/>
 					) : WeatherIcons[icon] ? (
-						<img
-							src={WeatherIcons[icon]}
-							alt='image'
-							placeholder='placeholder'
-						/>
+						<img src={WeatherIcons[icon]} alt='weatherIcon' />
 					) : (
 						<ImageOutlinedIcon />
 					)
