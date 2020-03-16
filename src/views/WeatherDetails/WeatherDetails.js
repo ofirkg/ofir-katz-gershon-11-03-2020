@@ -3,22 +3,39 @@ import axios from 'axios';
 import CurrentWeatherCard from 'components/CurrentWeatherCard/CurrentWeatherCard';
 import DayCard from 'components/DayCard/DayCard';
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 
 axios.defaults.baseURL = 'http://dataservice.accuweather.com';
 const { CancelToken } = axios;
 
+const useStyles = makeStyles({
+	root: {
+		alignContent: 'start',
+		height: '100%',
+	},
+	paperWrapper: {
+		padding: '20px',
+		height: '100%',
+		backgroundColor: '#ebebeb',
+	},
+	autocompleteWrapper: {
+		marginBottom: '50px',
+	},
+});
+
 export default function WeatherDetails() {
+	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [options, setOptions] = useState(autoCompleteMock);
 	const [selectedOption, setSelectedOption] = useState(null);
 	const [currentWeather, setCurrentWeather] = useState(null);
-	const [forecast, setForecast] = useState(null);
+	const [forecast, setForecast] = useState();
 	const [loading, setLoading] = useState(false);
 	const [currentWeatherLoading, setCurrentWeatherLoading] = useState(false);
 	const [forecastLoading, setForecastLoading] = useState(false);
@@ -163,8 +180,13 @@ export default function WeatherDetails() {
 	};
 
 	return (
-		<Grid container justify='center'>
-			<Grid container item justify='center' xs={12}>
+		<Grid container justify='center' className={classes.root}>
+			<Grid
+				container
+				item
+				justify='center'
+				xs={12}
+				className={classes.autocompleteWrapper}>
 				<Autocomplete
 					id='asynchronous-demo'
 					style={{ width: 300 }}
@@ -207,7 +229,7 @@ export default function WeatherDetails() {
 				/>
 			</Grid>
 			<Grid item xs={10}>
-				<Paper>
+				<Paper className={classes.paperWrapper}>
 					<Grid container>
 						<Grid container item xs={12}>
 							<Grid item xs={12} sm={6}>
@@ -237,11 +259,16 @@ export default function WeatherDetails() {
 							</Grid>
 						</Grid>
 						<Grid container item justify='center' xs={12}>
-							<p>
+							<Typography variant='h2' gutterBottom>
 								{currentWeather && currentWeather.WeatherText}
-							</p>
+							</Typography>
 						</Grid>
-						<Grid container item justify='center' xs={12}>
+						<Grid
+							container
+							item
+							justify='center'
+							xs={12}
+							spacing={2}>
 							{[...Array(5)].map((_, i) => {
 								return (
 									<Grid
