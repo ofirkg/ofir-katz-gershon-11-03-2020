@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CurrentWeatherCard from 'components/CurrentWeatherCard/CurrentWeatherCard';
 import DayCard from 'components/DayCard/DayCard';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 axios.defaults.baseURL = 'http://dataservice.accuweather.com';
 const { CancelToken } = axios;
@@ -26,39 +27,56 @@ const useStyles = makeStyles({
 	autocompleteWrapper: {
 		marginBottom: '50px',
 	},
+	currentWeatherPhrase: {
+		margin: '50px 0',
+	},
 });
+
+const telAvivOption = {
+	Version: 1,
+	Key: '215854',
+	Type: 'City',
+	Rank: 31,
+	LocalizedName: 'Tel Aviv',
+	Country: { ID: 'IL', LocalizedName: 'Israel' },
+	AdministrativeArea: { ID: 'TA', LocalizedName: 'Tel Aviv' },
+};
 
 export default function WeatherDetails() {
 	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
-	const [options, setOptions] = useState(autoCompleteMock);
+	const [searchTermChangeReason, setSearchTermChangeReason] = useState('');
+	const [options, setOptions] = useState([]);
 	const [selectedOption, setSelectedOption] = useState(null);
 	const [currentWeather, setCurrentWeather] = useState(null);
-	const [forecast, setForecast] = useState();
+	const [forecast, setForecast] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [currentWeatherLoading, setCurrentWeatherLoading] = useState(false);
 	const [forecastLoading, setForecastLoading] = useState(false);
 
 	// autocomplete fetch
 	useEffect(() => {
-		if (searchTerm.length === 0) {
+		if (
+			searchTerm.length === 0 ||
+			['reset', 'clear'].includes(searchTermChangeReason)
+		) {
 			return;
 		}
 		setLoading(true);
 		const source = CancelToken.source();
 		(async () => {
 			try {
-				// const result = await axios({
-				// 	url: '/locations/v1/cities/autocomplete',
-				// 	method: 'GET',
-				// 	cancelToken: source.token,
-				// 	params: {
-				// 		apikey: 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb',
-				// 		q: searchTerm,
-				// 	},
-				// });
-				// setOptions(result.data || []);
+				const result = await axios({
+					url: '/locations/v1/cities/autocomplete',
+					method: 'GET',
+					cancelToken: source.token,
+					params: {
+						apikey: 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb',
+						q: searchTerm,
+					},
+				});
+				setOptions(result.data || []);
 				setLoading(false);
 			} catch (e) {
 				setLoading(false);
@@ -66,7 +84,7 @@ export default function WeatherDetails() {
 			}
 		})();
 		return () => source.cancel();
-	}, [searchTerm]);
+	}, [searchTerm, searchTermChangeReason]);
 
 	// current weather fetch
 	useEffect(() => {
@@ -74,33 +92,25 @@ export default function WeatherDetails() {
 			return;
 		}
 		setCurrentWeatherLoading(true);
-		// const source = CancelToken.source();
+		const source = CancelToken.source();
 		(async () => {
 			try {
-				// const result = await axios({
-				// 	url: `/currentconditions/v1/${selectedOption.Key}`,
-				// 	method: 'GET',
-				// 	cancelToken: source.token,
-				// 	params: {
-				// 		apikey: 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb',
-				// 	},
-				// });
-				// setCurrentWeather(result.data[0] || null);
-				// setLoading(false);
-				await new Promise(resolve =>
-					setTimeout(() => {
-						setCurrentWeather(telavivCurrentWeatherMock[0]);
-						resolve();
-					}, 3000)
-				);
+				const result = await axios({
+					url: `/currentconditions/v1/${selectedOption.Key}`,
+					method: 'GET',
+					cancelToken: source.token,
+					params: {
+						apikey: 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb',
+					},
+				});
+				setCurrentWeather(result.data[0] || null);
 				setCurrentWeatherLoading(false);
 			} catch (e) {
-				// setLoading(false);
 				setCurrentWeatherLoading(false);
 				console.error(e);
 			}
 		})();
-		// return () => source.cancel();
+		return () => source.cancel();
 	}, [selectedOption]);
 
 	// forecast fetch
@@ -109,39 +119,34 @@ export default function WeatherDetails() {
 			return;
 		}
 		setForecastLoading(true);
-		// const source = CancelToken.source();
+		const source = CancelToken.source();
 		(async () => {
 			try {
-				// const result = await axios({
-				// 	url: `/currentconditions/v1/${selectedOption.Key}`,
-				// 	method: 'GET',
-				// 	cancelToken: source.token,
-				// 	params: {
-				// 		apikey: 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb',
-				// 	},
-				// });
-				// setCurrentWeather(result.data[0] || null);
-				// setLoading(false);
-				await new Promise(resolve =>
-					setTimeout(() => {
-						setForecast(fiveDayForecastMock.DailyForecasts);
-						resolve();
-					}, 3000)
-				);
+				const result = await axios({
+					url: `/forecasts/v1/daily/5day/${selectedOption.Key}`,
+					method: 'GET',
+					cancelToken: source.token,
+					params: {
+						apikey: 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb',
+						metric: true,
+					},
+				});
+				setForecast(result.data.DailyForecasts || null);
 				setForecastLoading(false);
 			} catch (e) {
 				setForecastLoading(false);
 				console.error(e);
 			}
 		})();
-		// return () => source.cancel();
+		return () => source.cancel();
 	}, [selectedOption]);
 
 	// default weather fetch
 	useEffect(() => {
 		// setCurrentWeatherLoading(true);
 		// const source = CancelToken.source();
-		setSelectedOption(telavivLocationInfoMock[0]);
+
+		setSelectedOption(telAvivOption);
 		// (async () => {
 		// 	try {
 		// 		// const result = await axios({
@@ -173,10 +178,11 @@ export default function WeatherDetails() {
 
 	const handleInputChange = (e, term, reason) => {
 		setSearchTerm(term);
+		setSearchTermChangeReason(reason);
 	};
 
 	const handleSelect = (e, option) => {
-		setSelectedOption(option);
+		option && setSelectedOption(option);
 	};
 
 	return (
@@ -259,9 +265,21 @@ export default function WeatherDetails() {
 							</Grid>
 						</Grid>
 						<Grid container item justify='center' xs={12}>
-							<Typography variant='h2' gutterBottom>
-								{currentWeather && currentWeather.WeatherText}
-							</Typography>
+							{currentWeatherLoading ? (
+								<Skeleton
+									animation='wave'
+									height={72}
+									width='40%'
+									style={{ margin: '50px 0' }}
+								/>
+							) : (
+								<Typography
+									variant='h2'
+									className={classes.currentWeatherPhrase}>
+									{currentWeather &&
+										currentWeather.WeatherText}
+								</Typography>
+							)}
 						</Grid>
 						<Grid
 							container
