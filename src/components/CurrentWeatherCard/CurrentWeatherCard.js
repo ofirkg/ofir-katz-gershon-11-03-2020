@@ -5,11 +5,11 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Skeleton from '@material-ui/lab/Skeleton';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
 import WeatherIcons from 'assets/WeatherIcons/';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
 	root: {
 		display: 'inline-block',
-		margin: '20px',
 		minWidth: '200px',
 	},
 });
@@ -51,14 +51,16 @@ export default function CurrentWeatherCard({
 							style={{ marginBottom: 6 }}
 						/>
 					) : (
-						location
+						<Typography variant='subtitle1'>{location}</Typography>
 					)
 				}
 				subheader={
 					loading ? (
 						<Skeleton animation='wave' height={10} width='40%' />
 					) : (
-						temperature
+						<Typography variant='subtitle2'>
+							{temperature}&deg;
+						</Typography>
 					)
 				}
 			/>
