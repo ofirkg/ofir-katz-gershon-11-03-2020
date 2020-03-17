@@ -12,10 +12,15 @@ const useStyles = makeStyles({
 		display: 'inline-block',
 		minWidth: '200px',
 	},
+	error: {
+		textAlign: 'center',
+		margin: '20px',
+	},
 });
 
 export default function CurrentWeatherCard({
 	loading,
+	error,
 	location = '',
 	temperature = '',
 	icon = 0,
@@ -23,43 +28,53 @@ export default function CurrentWeatherCard({
 	const classes = useStyles();
 	return (
 		<Card className={classes.root}>
-			<CardHeader
-				avatar={
-					loading ? (
-						<Skeleton
-							animation='wave'
-							variant='circle'
-							width={50}
-							height={50}
-						/>
-					) : WeatherIcons[icon] ? (
-						<img src={WeatherIcons[icon]} alt='weatherIcon' />
-					) : (
-						<ImageOutlinedIcon />
-					)
-				}
-				title={
-					loading ? (
-						<Skeleton
-							animation='wave'
-							height={16}
-							width='80%'
-							style={{ marginBottom: 6 }}
-						/>
-					) : (
-						<Typography variant='subtitle1'>{location}</Typography>
-					)
-				}
-				subheader={
-					loading ? (
-						<Skeleton animation='wave' height={14} width='40%' />
-					) : (
-						<Typography variant='subtitle2'>
-							{Math.round(temperature)}&deg;
-						</Typography>
-					)
-				}
-			/>
+			{error ? (
+				<div className={classes.error}>Information Unavailable</div>
+			) : (
+				<CardHeader
+					avatar={
+						loading ? (
+							<Skeleton
+								animation='wave'
+								variant='circle'
+								width={50}
+								height={50}
+							/>
+						) : WeatherIcons[icon] ? (
+							<img src={WeatherIcons[icon]} alt='weatherIcon' />
+						) : (
+							<ImageOutlinedIcon />
+						)
+					}
+					title={
+						loading ? (
+							<Skeleton
+								animation='wave'
+								height={16}
+								width='80%'
+								style={{ marginBottom: 6 }}
+							/>
+						) : (
+							<Typography variant='subtitle1'>
+								{location}
+							</Typography>
+						)
+					}
+					subheader={
+						loading ? (
+							<Skeleton
+								animation='wave'
+								height={14}
+								width='40%'
+							/>
+						) : (
+							<Typography variant='subtitle2'>
+								{Math.round(temperature)}&deg;
+							</Typography>
+						)
+					}
+				/>
+			)}
 		</Card>
 	);
 }
