@@ -11,7 +11,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import Card from '@material-ui/core/Card';
+import StarRoundedIcon from '@material-ui/icons/StarRounded';
+import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
+import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 
 axios.defaults.baseURL = 'http://dataservice.accuweather.com';
 const { CancelToken } = axios;
@@ -28,6 +31,10 @@ const useStyles = makeStyles(theme => ({
 	},
 	autocompleteWrapper: {
 		marginBottom: '50px',
+	},
+	currentWeatherTop: {
+		flexWrap: 'nowrap',
+		marginBottom: '20px',
 	},
 	currentWeatherPhrase: {
 		margin: '50px 0',
@@ -48,7 +55,11 @@ const useStyles = makeStyles(theme => ({
 		},
 	},
 	currentWeatherErrorIcon: {
-		fontSize: '50px',
+		fontSize: '40px',
+	},
+	favoritesButton: {
+		width: '59px',
+		height: '59px',
 	},
 }));
 
@@ -61,6 +72,8 @@ const defaultWeather = {
 	Country: { ID: 'IL', LocalizedName: 'Israel' },
 	AdministrativeArea: { ID: 'TA', LocalizedName: 'Tel Aviv' },
 };
+
+const apikey = 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb_';
 
 export default function WeatherDetails() {
 	const classes = useStyles();
@@ -77,6 +90,7 @@ export default function WeatherDetails() {
 	const [autocompleteError, setAutocompleteError] = useState(false);
 	const [currentWeatherError, setCurrentWeatherError] = useState(false);
 	const [forecastError, setForecastError] = useState(false);
+	const [addedToFavorites, setAddedToFavorites] = useState(false);
 
 	// autocomplete fetch
 	useEffect(() => {
@@ -95,7 +109,7 @@ export default function WeatherDetails() {
 					method: 'GET',
 					cancelToken: source.token,
 					params: {
-						apikey: 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb',
+						apikey,
 						q: searchTerm,
 					},
 				});
@@ -129,7 +143,7 @@ export default function WeatherDetails() {
 					method: 'GET',
 					cancelToken: source.token,
 					params: {
-						apikey: 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb',
+						apikey,
 					},
 				});
 				setCurrentWeather(result.data[0] || null);
@@ -162,7 +176,7 @@ export default function WeatherDetails() {
 					method: 'GET',
 					cancelToken: source.token,
 					params: {
-						apikey: 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb',
+						apikey,
 						metric: true,
 					},
 				});
@@ -194,6 +208,10 @@ export default function WeatherDetails() {
 
 	const handleSelect = (e, option) => {
 		option && setSelectedOption(option);
+	};
+
+	const toggleFavorite = () => {
+		setAddedToFavorites(prev => !prev);
 	};
 
 	return (
@@ -248,7 +266,11 @@ export default function WeatherDetails() {
 			<Grid item xs={10}>
 				<Paper className={classes.paperWrapper}>
 					<Grid container>
-						<Grid container item xs={12}>
+						<Grid
+							container
+							item
+							className={classes.currentWeatherTop}
+							xs={12}>
 							<Grid item xs={12} sm={6}>
 								<CurrentWeatherCard
 									loading={currentWeatherLoading}
@@ -272,8 +294,32 @@ export default function WeatherDetails() {
 								item
 								xs={12}
 								sm={6}
-								justify='flex-end'>
-								favorites
+								justify='flex-end'
+								alignItems='center'>
+								{addedToFavorites ? (
+									<IconButton
+										onClick={toggleFavorite}
+										className={classes.favoritesButton}>
+										<Tooltip
+											title='Remove from favorties'
+											aria-label='Remove from favorties'>
+											<StarRoundedIcon
+												fontSize='large'
+												style={{ color: '#F5CC27' }}
+											/>
+										</Tooltip>
+									</IconButton>
+								) : (
+									<IconButton
+										onClick={toggleFavorite}
+										className={classes.favoritesButton}>
+										<Tooltip
+											title='Add to favorties'
+											aria-label='Add to favorties'>
+											<StarBorderRoundedIcon fontSize='large' />
+										</Tooltip>
+									</IconButton>
+								)}
 							</Grid>
 						</Grid>
 						<Grid container item justify='center' xs={12}>
