@@ -148,7 +148,7 @@ export default function DayCard({ loading = true, error, data = defaultData }) {
 										component='span'>
 										/
 										{Math.round(
-											data.Temperature.Maximum.Value
+											data.Temperature.Minimum.Value
 										)}
 										&deg;
 									</Typography>
