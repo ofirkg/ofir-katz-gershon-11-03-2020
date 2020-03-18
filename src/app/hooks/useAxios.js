@@ -14,7 +14,7 @@ const useAxios = ({
 	const [innerTrigger, setInnerTrigger] = useState(0);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
-	const [results, setResults] = useState([]);
+	const [results, setResults] = useState(undefined);
 
 	let outerTrigger = trigger;
 	try {
@@ -33,16 +33,13 @@ const useAxios = ({
 
 		(async () => {
 			try {
-				// const result = await axios({
-				// 	url,
-				// 	method,
-				// 	cancelToken: source.token,
-				// 	...options,
-				// });
-				await new Promise(resolve => {
-					setTimeout(resolve, 3000);
+				const result = await axios({
+					url,
+					method,
+					cancelToken: source.token,
+					...options,
 				});
-				// setResults(result.data);
+				setResults(result.data);
 				setLoading(false);
 				setError(false);
 			} catch (e) {
