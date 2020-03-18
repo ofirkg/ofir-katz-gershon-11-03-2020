@@ -9,6 +9,9 @@ import WeatherIcons from 'assets/WeatherIcons/';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
+	root: {
+		height: '100%',
+	},
 	content: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -57,7 +60,7 @@ export default function DayCard({ loading = true, error, data = defaultData }) {
 	const formattedDate = `${day}/${month}`;
 
 	return (
-		<Card>
+		<Card className={classes.root}>
 			{error ? (
 				<div className={classes.error}>Information Unavailable</div>
 			) : (
