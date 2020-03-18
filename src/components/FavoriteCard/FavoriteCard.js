@@ -9,6 +9,9 @@ import WeatherIcons from 'assets/WeatherIcons/';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
+	root: {
+		height: '100%',
+	},
 	content: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -32,7 +35,7 @@ export default function FavoriteCard({
 	const classes = useStyles();
 
 	return (
-		<Card>
+		<Card className={classes.root}>
 			<CardHeader title={location} />
 			<CardContent>
 				<div className={classes.content}>
