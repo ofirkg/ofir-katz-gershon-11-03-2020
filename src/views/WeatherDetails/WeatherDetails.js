@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import useQuery from 'app/hooks/useQuery';
 import useAxios from 'app/hooks/useAxios';
 import {
 	addToFavorties,
@@ -23,8 +24,8 @@ import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
-axios.defaults.baseURL = 'http://dataservice.accuweather.com';
-const { CancelToken } = axios;
+// axios.defaults.baseURL = 'http://dataservice.accuweather.com';
+// const { CancelToken } = axios;
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -80,201 +81,202 @@ const defaultLocation = {
 	AdministrativeArea: { ID: 'TA', LocalizedName: 'Tel Aviv' },
 };
 
-const currentWeather = {
-	LocalObservationDateTime: '2020-03-14T10:05:00+02:00',
-	EpochTime: 1584173100,
-	WeatherText: 'Clouds and sun',
-	WeatherIcon: 4,
-	HasPrecipitation: false,
-	PrecipitationType: null,
-	IsDayTime: true,
-	Temperature: {
-		Metric: {
-			Value: 18.3,
-			Unit: 'C',
-			UnitType: 17,
-		},
-		Imperial: {
-			Value: 65,
-			Unit: 'F',
-			UnitType: 18,
-		},
-	},
-	MobileLink:
-		'http://m.accuweather.com/en/il/netanya/212474/current-weather/212474?lang=en-us',
-	Link:
-		'http://www.accuweather.com/en/il/netanya/212474/current-weather/212474?lang=en-us',
-};
+// const currentWeather = {
+// 	LocalObservationDateTime: '2020-03-14T10:05:00+02:00',
+// 	EpochTime: 1584173100,
+// 	WeatherText: 'Clouds and sun',
+// 	WeatherIcon: 4,
+// 	HasPrecipitation: false,
+// 	PrecipitationType: null,
+// 	IsDayTime: true,
+// 	Temperature: {
+// 		Metric: {
+// 			Value: 18.3,
+// 			Unit: 'C',
+// 			UnitType: 17,
+// 		},
+// 		Imperial: {
+// 			Value: 65,
+// 			Unit: 'F',
+// 			UnitType: 18,
+// 		},
+// 	},
+// 	MobileLink:
+// 		'http://m.accuweather.com/en/il/netanya/212474/current-weather/212474?lang=en-us',
+// 	Link:
+// 		'http://www.accuweather.com/en/il/netanya/212474/current-weather/212474?lang=en-us',
+// };
 
-const forecast = [
-	{
-		Date: '2020-03-14T07:00:00+02:00',
-		EpochDate: 1584162000,
-		Temperature: {
-			Minimum: {
-				Value: 14.2,
-				Unit: 'C',
-				UnitType: 17,
-			},
-			Maximum: {
-				Value: 19,
-				Unit: 'C',
-				UnitType: 17,
-			},
-		},
-		Day: {
-			Icon: 14,
-			IconPhrase: 'Partly sunny w/ showers',
-			HasPrecipitation: true,
-			PrecipitationType: 'Rain',
-			PrecipitationIntensity: 'Light',
-		},
-		Night: {
-			Icon: 37,
-			IconPhrase: 'Hazy moonlight',
-			HasPrecipitation: false,
-		},
-		Sources: ['AccuWeather'],
-		MobileLink:
-			'http://m.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=1&unit=c&lang=en-us',
-		Link:
-			'http://www.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=1&unit=c&lang=en-us',
-	},
-	{
-		Date: '2020-03-15T07:00:00+02:00',
-		EpochDate: 1584248400,
-		Temperature: {
-			Minimum: {
-				Value: 12.8,
-				Unit: 'C',
-				UnitType: 17,
-			},
-			Maximum: {
-				Value: 20.4,
-				Unit: 'C',
-				UnitType: 17,
-			},
-		},
-		Day: {
-			Icon: 6,
-			IconPhrase: 'Mostly cloudy',
-			HasPrecipitation: false,
-		},
-		Night: {
-			Icon: 37,
-			IconPhrase: 'Hazy moonlight',
-			HasPrecipitation: false,
-		},
-		Sources: ['AccuWeather'],
-		MobileLink:
-			'http://m.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=2&unit=c&lang=en-us',
-		Link:
-			'http://www.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=2&unit=c&lang=en-us',
-	},
-	{
-		Date: '2020-03-16T07:00:00+02:00',
-		EpochDate: 1584334800,
-		Temperature: {
-			Minimum: {
-				Value: 13,
-				Unit: 'C',
-				UnitType: 17,
-			},
-			Maximum: {
-				Value: 21.7,
-				Unit: 'C',
-				UnitType: 17,
-			},
-		},
-		Day: {
-			Icon: 5,
-			IconPhrase: 'Hazy sunshine',
-			HasPrecipitation: false,
-		},
-		Night: {
-			Icon: 35,
-			IconPhrase: 'Partly cloudy',
-			HasPrecipitation: false,
-		},
-		Sources: ['AccuWeather'],
-		MobileLink:
-			'http://m.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=3&unit=c&lang=en-us',
-		Link:
-			'http://www.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=3&unit=c&lang=en-us',
-	},
-	{
-		Date: '2020-03-17T07:00:00+02:00',
-		EpochDate: 1584421200,
-		Temperature: {
-			Minimum: {
-				Value: 11.7,
-				Unit: 'C',
-				UnitType: 17,
-			},
-			Maximum: {
-				Value: 19.4,
-				Unit: 'C',
-				UnitType: 17,
-			},
-		},
-		Day: {
-			Icon: 14,
-			IconPhrase: 'Partly sunny w/ showers',
-			HasPrecipitation: true,
-			PrecipitationType: 'Rain',
-			PrecipitationIntensity: 'Light',
-		},
-		Night: {
-			Icon: 39,
-			IconPhrase: 'Partly cloudy w/ showers',
-			HasPrecipitation: true,
-			PrecipitationType: 'Rain',
-			PrecipitationIntensity: 'Light',
-		},
-		Sources: ['AccuWeather'],
-		MobileLink:
-			'http://m.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=4&unit=c&lang=en-us',
-		Link:
-			'http://www.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=4&unit=c&lang=en-us',
-	},
-	{
-		Date: '2020-03-18T07:00:00+02:00',
-		EpochDate: 1584507600,
-		Temperature: {
-			Minimum: {
-				Value: 11.6,
-				Unit: 'C',
-				UnitType: 17,
-			},
-			Maximum: {
-				Value: 15.5,
-				Unit: 'C',
-				UnitType: 17,
-			},
-		},
-		Day: {
-			Icon: 3,
-			IconPhrase: 'Partly sunny',
-			HasPrecipitation: false,
-		},
-		Night: {
-			Icon: 35,
-			IconPhrase: 'Partly cloudy',
-			HasPrecipitation: true,
-			PrecipitationType: 'Rain',
-			PrecipitationIntensity: 'Light',
-		},
-		Sources: ['AccuWeather'],
-		MobileLink:
-			'http://m.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=5&unit=c&lang=en-us',
-		Link:
-			'http://www.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=5&unit=c&lang=en-us',
-	},
-];
+// const forecast = [
+// 	{
+// 		Date: '2020-03-14T07:00:00+02:00',
+// 		EpochDate: 1584162000,
+// 		Temperature: {
+// 			Minimum: {
+// 				Value: 14.2,
+// 				Unit: 'C',
+// 				UnitType: 17,
+// 			},
+// 			Maximum: {
+// 				Value: 19,
+// 				Unit: 'C',
+// 				UnitType: 17,
+// 			},
+// 		},
+// 		Day: {
+// 			Icon: 14,
+// 			IconPhrase: 'Partly sunny w/ showers',
+// 			HasPrecipitation: true,
+// 			PrecipitationType: 'Rain',
+// 			PrecipitationIntensity: 'Light',
+// 		},
+// 		Night: {
+// 			Icon: 37,
+// 			IconPhrase: 'Hazy moonlight',
+// 			HasPrecipitation: false,
+// 		},
+// 		Sources: ['AccuWeather'],
+// 		MobileLink:
+// 			'http://m.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=1&unit=c&lang=en-us',
+// 		Link:
+// 			'http://www.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=1&unit=c&lang=en-us',
+// 	},
+// 	{
+// 		Date: '2020-03-15T07:00:00+02:00',
+// 		EpochDate: 1584248400,
+// 		Temperature: {
+// 			Minimum: {
+// 				Value: 12.8,
+// 				Unit: 'C',
+// 				UnitType: 17,
+// 			},
+// 			Maximum: {
+// 				Value: 20.4,
+// 				Unit: 'C',
+// 				UnitType: 17,
+// 			},
+// 		},
+// 		Day: {
+// 			Icon: 6,
+// 			IconPhrase: 'Mostly cloudy',
+// 			HasPrecipitation: false,
+// 		},
+// 		Night: {
+// 			Icon: 37,
+// 			IconPhrase: 'Hazy moonlight',
+// 			HasPrecipitation: false,
+// 		},
+// 		Sources: ['AccuWeather'],
+// 		MobileLink:
+// 			'http://m.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=2&unit=c&lang=en-us',
+// 		Link:
+// 			'http://www.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=2&unit=c&lang=en-us',
+// 	},
+// 	{
+// 		Date: '2020-03-16T07:00:00+02:00',
+// 		EpochDate: 1584334800,
+// 		Temperature: {
+// 			Minimum: {
+// 				Value: 13,
+// 				Unit: 'C',
+// 				UnitType: 17,
+// 			},
+// 			Maximum: {
+// 				Value: 21.7,
+// 				Unit: 'C',
+// 				UnitType: 17,
+// 			},
+// 		},
+// 		Day: {
+// 			Icon: 5,
+// 			IconPhrase: 'Hazy sunshine',
+// 			HasPrecipitation: false,
+// 		},
+// 		Night: {
+// 			Icon: 35,
+// 			IconPhrase: 'Partly cloudy',
+// 			HasPrecipitation: false,
+// 		},
+// 		Sources: ['AccuWeather'],
+// 		MobileLink:
+// 			'http://m.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=3&unit=c&lang=en-us',
+// 		Link:
+// 			'http://www.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=3&unit=c&lang=en-us',
+// 	},
+// 	{
+// 		Date: '2020-03-17T07:00:00+02:00',
+// 		EpochDate: 1584421200,
+// 		Temperature: {
+// 			Minimum: {
+// 				Value: 11.7,
+// 				Unit: 'C',
+// 				UnitType: 17,
+// 			},
+// 			Maximum: {
+// 				Value: 19.4,
+// 				Unit: 'C',
+// 				UnitType: 17,
+// 			},
+// 		},
+// 		Day: {
+// 			Icon: 14,
+// 			IconPhrase: 'Partly sunny w/ showers',
+// 			HasPrecipitation: true,
+// 			PrecipitationType: 'Rain',
+// 			PrecipitationIntensity: 'Light',
+// 		},
+// 		Night: {
+// 			Icon: 39,
+// 			IconPhrase: 'Partly cloudy w/ showers',
+// 			HasPrecipitation: true,
+// 			PrecipitationType: 'Rain',
+// 			PrecipitationIntensity: 'Light',
+// 		},
+// 		Sources: ['AccuWeather'],
+// 		MobileLink:
+// 			'http://m.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=4&unit=c&lang=en-us',
+// 		Link:
+// 			'http://www.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=4&unit=c&lang=en-us',
+// 	},
+// 	{
+// 		Date: '2020-03-18T07:00:00+02:00',
+// 		EpochDate: 1584507600,
+// 		Temperature: {
+// 			Minimum: {
+// 				Value: 11.6,
+// 				Unit: 'C',
+// 				UnitType: 17,
+// 			},
+// 			Maximum: {
+// 				Value: 15.5,
+// 				Unit: 'C',
+// 				UnitType: 17,
+// 			},
+// 		},
+// 		Day: {
+// 			Icon: 3,
+// 			IconPhrase: 'Partly sunny',
+// 			HasPrecipitation: false,
+// 		},
+// 		Night: {
+// 			Icon: 35,
+// 			IconPhrase: 'Partly cloudy',
+// 			HasPrecipitation: true,
+// 			PrecipitationType: 'Rain',
+// 			PrecipitationIntensity: 'Light',
+// 		},
+// 		Sources: ['AccuWeather'],
+// 		MobileLink:
+// 			'http://m.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=5&unit=c&lang=en-us',
+// 		Link:
+// 			'http://www.accuweather.com/en/il/netanya/212474/daily-weather-forecast/212474?day=5&unit=c&lang=en-us',
+// 	},
+// ];
 
 const apikey = 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb';
 
 export default function WeatherDetails() {
+	const query = useQuery();
 	const classes = useStyles();
 	const favorites = useSelector(selectFavorites);
 	const dispatch = useDispatch();
@@ -353,7 +355,7 @@ export default function WeatherDetails() {
 
 	// current weather fetch
 	const [
-		currentWeather_,
+		currentWeather,
 		currentWeatherError,
 		currentWeatherLoading,
 		currentWeatherReFetch,
@@ -410,7 +412,7 @@ export default function WeatherDetails() {
 
 	// forecast fetch
 	const [
-		forecast_,
+		forecast,
 		forecastError,
 		forecastLoading,
 		forecastReFetch,
@@ -469,7 +471,18 @@ export default function WeatherDetails() {
 
 	// default weather fetch
 	useEffect(() => {
-		setSelectedOption(defaultLocation);
+		const idQueryParam = query.get('id');
+		const locationQueryParam = query.get('location');
+		if (idQueryParam) {
+			setSelectedOption({
+				Key: idQueryParam,
+				LocalizedName: locationQueryParam,
+			});
+		} else {
+			setSelectedOption(defaultLocation);
+		}
+
+		setIsInFavorites(favorites.some(fav => fav.id == defaultLocation.Key));
 	}, []);
 
 	const handleInputChange = (e, term, reason) => {
@@ -480,17 +493,27 @@ export default function WeatherDetails() {
 	const handleSelect = (e, option) => {
 		if (option) {
 			setSelectedOption(option);
-			setIsInFavorites(favorites.includes(option.LocalizedName));
+			setIsInFavorites(favorites.some(fav => fav.id == option.Key));
 		}
 	};
 
 	const toggleFavorite = () => {
-		if (isInFavorites) {
-			dispatch(removeFromFavorites(selectedOption.LocalizedName));
+		const isCurrentLocationInFavorites = favorites.some(
+			fav => fav.id == selectedOption.Key
+		);
+		if (isCurrentLocationInFavorites) {
+			dispatch(removeFromFavorites(selectedOption.Key));
+			setIsInFavorites(false);
 		} else {
-			dispatch(addToFavorties(selectedOption.LocalizedName));
+			dispatch(
+				addToFavorties({
+					id: selectedOption.Key,
+					location: selectedOption.LocalizedName,
+					data: currentWeather[0],
+				})
+			);
+			setIsInFavorites(true);
 		}
-		setIsInFavorites(prev => !prev);
 	};
 
 	return (
@@ -517,12 +540,12 @@ export default function WeatherDetails() {
 						option.name === value.name
 					}
 					getOptionLabel={option => option.LocalizedName}
-					options={autoCompleteMock}
+					options={options || []}
 					loading={autocompleteLoading}
 					renderInput={params => (
 						<TextField
 							{...params}
-							label='Asynchronous'
+							label='Search'
 							variant='outlined'
 							InputProps={{
 								...params.InputProps,
@@ -560,11 +583,12 @@ export default function WeatherDetails() {
 									}
 									temperature={
 										currentWeather &&
-										currentWeather.Temperature.Metric.Value
+										currentWeather[0].Temperature.Metric
+											.Value
 									}
 									icon={
 										currentWeather &&
-										currentWeather.WeatherIcon
+										currentWeather[0].WeatherIcon
 									}
 								/>
 							</Grid>
@@ -630,7 +654,7 @@ export default function WeatherDetails() {
 									variant='h2'
 									className={classes.currentWeatherPhrase}>
 									{currentWeather &&
-										currentWeather.WeatherText}
+										currentWeather[0].WeatherText}
 								</Typography>
 							)}
 						</Grid>
@@ -650,7 +674,10 @@ export default function WeatherDetails() {
 										key={`day_${i}`}>
 										<DayCard
 											loading={forecastLoading}
-											data={forecast && forecast[i]}
+											data={
+												forecast &&
+												forecast.DailyForecasts[i]
+											}
 											error={forecastError}
 										/>
 									</Grid>
