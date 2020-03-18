@@ -13,7 +13,7 @@ export const slice = createSlice({
 			state.push(payload);
 		},
 		removeFromFavorites: (state, { payload }) => {
-			remove(state, fav => fav === payload);
+			remove(state, fav => fav.id == payload);
 		},
 	},
 });
