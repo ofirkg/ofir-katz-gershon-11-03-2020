@@ -1,6 +1,7 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { selectFavorites } from 'views/Favorites/FavoritesSlice';
 import { NavLink } from 'react-router-dom';
-
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -20,8 +21,14 @@ const useStyles = makeStyles(theme => ({
 	},
 	title: {
 		flexGrow: 1,
+		[theme.breakpoints.down('xs')]: {
+			flex: '0 0 100%',
+			fontSize: '1rem',
+			textAlign: 'center',
+		},
 	},
 	appBar: {
+		marginBottom: '20px',
 		backgroundColor: '#56a5e8',
 	},
 	button: {
@@ -34,9 +41,17 @@ const useStyles = makeStyles(theme => ({
 	activeLink: {
 		color: 'yellow',
 	},
+	toolBar: {
+		[theme.breakpoints.down('xs')]: {
+			justifyContent: 'space-between',
+			flexWrap: 'wrap',
+			marginBottom: '15px',
+		},
+	},
 }));
 
 export default function NavBar() {
+	const favorites = useSelector(selectFavorites);
 	const classes = useStyles();
 	return (
 		<AppBar
@@ -44,14 +59,7 @@ export default function NavBar() {
 			classes={{
 				colorPrimary: classes.appBar,
 			}}>
-			<Toolbar>
-				<IconButton
-					edge='start'
-					className={classes.menuButton}
-					color='inherit'
-					aria-label='menu'>
-					<MenuIcon />
-				</IconButton>
+			<Toolbar className={classes.toolBar}>
 				<Typography variant='h6' className={classes.title}>
 					Herolo Weather App
 				</Typography>
@@ -73,7 +81,9 @@ export default function NavBar() {
 					activeClassName={classes.activeLink}>
 					<Button color='inherit' variant='outlined'>
 						Favorites
-						<Badge badgeContent={4} color='secondary'>
+						<Badge
+							badgeContent={favorites.length}
+							color='secondary'>
 							<StarIcon />
 						</Badge>
 					</Button>
