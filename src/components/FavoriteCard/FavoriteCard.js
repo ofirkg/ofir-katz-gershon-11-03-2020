@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
-import Skeleton from '@material-ui/lab/Skeleton';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
 import WeatherIcons from 'assets/WeatherIcons/';
 import Typography from '@material-ui/core/Typography';
