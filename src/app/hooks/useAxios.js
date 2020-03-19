@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://dataservice.accuweather.com';
+axios.defaults.baseURL = 'https://dataservice.accuweather.com';
 const { CancelToken } = axios;
 
 const useAxios = ({
