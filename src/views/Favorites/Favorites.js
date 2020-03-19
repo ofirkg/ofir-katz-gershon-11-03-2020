@@ -1,11 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import {
-	addToFavorties,
-	removeFromFavorites,
-	selectFavorites,
-} from 'views/Favorites/FavoritesSlice';
+import { selectFavorites } from 'views/Favorites/FavoritesSlice';
 import FavoriteCard from 'components/FavoriteCard/FavoriteCard';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -36,8 +32,8 @@ export default function Favorites() {
 				<Typography variant='h2'>Favorites</Typography>
 			</Grid>
 			<Grid container justify='center' item xs={10} spacing={3}>
-				{favoritesMock &&
-					favoritesMock.map(fav => {
+				{favorites &&
+					favorites.map(fav => {
 						return (
 							<Grid item key={fav.id}>
 								<Link
@@ -55,136 +51,3 @@ export default function Favorites() {
 		</Grid>
 	);
 }
-
-const favoritesMock = [
-	{
-		Key: '182536',
-		location: 'Athens',
-		data: {
-			WeatherText: 'Partly sunny',
-			WeatherIcon: 3,
-			Temperature: {
-				Metric: {
-					Value: 19.2,
-				},
-			},
-		},
-	},
-	{
-		Key: '316938',
-		location: 'Ankara',
-		data: {
-			WeatherText: 'Partly sunny',
-			WeatherIcon: 3,
-			Temperature: {
-				Metric: {
-					Value: 19.2,
-				},
-			},
-		},
-	},
-	{
-		Key: '126995',
-		LocalizedName: 'Alexandria',
-		data: {
-			WeatherText: 'Partly sunny',
-			WeatherIcon: 3,
-			Temperature: {
-				Metric: {
-					Value: 19.2,
-				},
-			},
-		},
-	},
-	{
-		Key: '56912',
-		LocalizedName: 'Anqing',
-		data: {
-			WeatherText: 'Partly sunny',
-			WeatherIcon: 3,
-			Temperature: {
-				Metric: {
-					Value: 19.2,
-				},
-			},
-		},
-	},
-	{
-		Key: '59083',
-		LocalizedName: 'Anyang',
-		data: {
-			WeatherText: 'Partly sunny',
-			WeatherIcon: 3,
-			Temperature: {
-				Metric: {
-					Value: 19.2,
-				},
-			},
-		},
-	},
-	{
-		Key: '102138',
-		LocalizedName: 'Anshan',
-		data: {
-			WeatherText: 'Partly sunny',
-			WeatherIcon: 3,
-			Temperature: {
-				Metric: {
-					Value: 19.2,
-				},
-			},
-		},
-	},
-	{
-		Key: '202438',
-		LocalizedName: 'Ahmedabad',
-		data: {
-			WeatherText: 'Partly sunny',
-			WeatherIcon: 3,
-			Temperature: {
-				Metric: {
-					Value: 19.2,
-				},
-			},
-		},
-	},
-	{
-		Key: '2093',
-		LocalizedName: 'Algiers',
-		data: {
-			WeatherText: 'Partly sunny',
-			WeatherIcon: 3,
-			Temperature: {
-				Metric: {
-					Value: 19.2,
-				},
-			},
-		},
-	},
-	{
-		Key: '126831',
-		LocalizedName: 'Addis Ababa',
-		data: {
-			WeatherText: 'Partly sunny',
-			WeatherIcon: 3,
-			Temperature: {
-				Metric: {
-					Value: 19.2,
-				},
-			},
-		},
-	},
-	{
-		Key: '178551',
-		LocalizedName: 'Accra',
-		data: {
-			WeatherText: 'Partly sunny',
-			WeatherIcon: 3,
-			Temperature: {
-				Metric: {
-					Value: 19.2,
-				},
-			},
-		},
-	},
-];
