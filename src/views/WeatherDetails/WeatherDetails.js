@@ -509,7 +509,7 @@ export default function WeatherDetails() {
 				addToFavorties({
 					id: selectedOption.Key,
 					location: selectedOption.LocalizedName,
-					data: currentWeather[0],
+					data: currentWeather && currentWeather[0],
 				})
 			);
 			setIsInFavorites(true);
