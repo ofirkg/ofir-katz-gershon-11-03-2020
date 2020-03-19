@@ -33,7 +33,7 @@ export default function FavoriteCard({
 	Temperature,
 }) {
 	const classes = useStyles();
-
+	const temperature = Temperature?.Metric?.Value;
 	return (
 		<Card className={classes.root}>
 			<CardHeader title={location} />
@@ -53,12 +53,10 @@ export default function FavoriteCard({
 				</div>
 
 				<div className={classes.degrees}>
-					{!isNaN(Temperature.Metric.Value) && (
-						<Typography variant='h3' component='span'>
-							{Math.round(Temperature.Metric.Value)}
-							&deg;
-						</Typography>
-					)}
+					<Typography variant='h3' component='span'>
+						{temperature}
+						&deg;
+					</Typography>
 				</div>
 			</CardContent>
 		</Card>
