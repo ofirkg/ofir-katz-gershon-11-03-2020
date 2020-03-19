@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "f30c596a80434f1c92c03233a6f507bb",
+    "revision": "765e2062f2f771781eb544f2c5ead003",
     "url": "/ofir-katz-gershon-11-03-2020/index.html"
   },
   {
-    "revision": "037cc5fc902994bf15e4",
+    "revision": "522d10c75c126935eb29",
     "url": "/ofir-katz-gershon-11-03-2020/static/css/main.69eda509.chunk.css"
   },
   {
-    "revision": "75014d3c5e0c056c4cff",
-    "url": "/ofir-katz-gershon-11-03-2020/static/js/2.2814290c.chunk.js"
+    "revision": "0940648769897a9302a3",
+    "url": "/ofir-katz-gershon-11-03-2020/static/js/2.13d18d02.chunk.js"
   },
   {
     "revision": "84c7b19269f6e118b33bddb7c7a89789",
-    "url": "/ofir-katz-gershon-11-03-2020/static/js/2.2814290c.chunk.js.LICENSE.txt"
+    "url": "/ofir-katz-gershon-11-03-2020/static/js/2.13d18d02.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "037cc5fc902994bf15e4",
-    "url": "/ofir-katz-gershon-11-03-2020/static/js/main.e16b461d.chunk.js"
+    "revision": "522d10c75c126935eb29",
+    "url": "/ofir-katz-gershon-11-03-2020/static/js/main.41db3d0a.chunk.js"
   },
   {
     "revision": "dfb9f8da623e22ba09d7",
