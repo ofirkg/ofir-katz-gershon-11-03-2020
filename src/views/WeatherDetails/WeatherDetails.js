@@ -114,7 +114,7 @@ export default function WeatherDetails() {
 	});
 	// current weather fetch
 	const [
-		currentWeather,
+		currentWeather = [],
 		currentWeatherError,
 		currentWeatherLoading,
 		currentWeatherReFetch,
@@ -263,19 +263,12 @@ export default function WeatherDetails() {
 								<CurrentWeatherCard
 									loading={currentWeatherLoading}
 									error={currentWeatherError}
-									location={
-										selectedOption &&
-										selectedOption.LocalizedName
-									}
+									location={selectedOption?.LocalizedName}
 									temperature={
-										currentWeather &&
-										currentWeather[0].Temperature.Metric
-											.Value
+										currentWeather[0]?.Temperature.Metric
+											?.Value
 									}
-									icon={
-										currentWeather &&
-										currentWeather[0].WeatherIcon
-									}
+									icon={currentWeather[0]?.WeatherIcon}
 								/>
 							</Grid>
 							<Grid
@@ -339,8 +332,7 @@ export default function WeatherDetails() {
 								<Typography
 									variant='h2'
 									className={classes.currentWeatherPhrase}>
-									{currentWeather &&
-										currentWeather[0].WeatherText}
+									{currentWeather[0]?.WeatherText}
 								</Typography>
 							)}
 						</Grid>
@@ -360,10 +352,7 @@ export default function WeatherDetails() {
 										key={`day_${i}`}>
 										<DayCard
 											loading={forecastLoading}
-											data={
-												forecast &&
-												forecast.DailyForecasts[i]
-											}
+											data={forecast?.DailyForecasts[i]}
 											error={forecastError}
 										/>
 									</Grid>
