@@ -91,12 +91,7 @@ export default function WeatherDetails() {
 	const [isInFavorites, setIsInFavorites] = useState(false);
 
 	// autocomplete fetch
-	const [
-		options,
-		autocompleteError,
-		autocompleteLoading,
-		autocompleteReFetch,
-	] = useAxios({
+	const { results: options, loading: autocompleteLoading } = useAxios({
 		url: '/locations/v1/cities/autocomplete',
 		options: {
 			params: {
@@ -113,12 +108,11 @@ export default function WeatherDetails() {
 		},
 	});
 	// current weather fetch
-	const [
-		currentWeather = [],
-		currentWeatherError,
-		currentWeatherLoading,
-		currentWeatherReFetch,
-	] = useAxios({
+	const {
+		results: currentWeather = [],
+		error: currentWeatherError,
+		loading: currentWeatherLoading,
+	} = useAxios({
 		url: selectedOption
 			? `/currentconditions/v1/${selectedOption.Key}`
 			: '',
@@ -134,12 +128,11 @@ export default function WeatherDetails() {
 	});
 
 	// forecast fetch
-	const [
-		forecast,
-		forecastError,
-		forecastLoading,
-		forecastReFetch,
-	] = useAxios({
+	const {
+		results: forecast,
+		error: forecastError,
+		loading: forecastLoading,
+	} = useAxios({
 		url: selectedOption
 			? `/forecasts/v1/daily/5day/${selectedOption.Key}`
 			: '',

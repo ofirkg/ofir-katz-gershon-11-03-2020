@@ -56,7 +56,12 @@ const useAxios = ({
 		return () => source.cancel();
 	}, [innerTrigger, outerTrigger]);
 
-	return [results, error, loading, () => setInnerTrigger(+new Date())];
+	return {
+		results,
+		error,
+		loading,
+		reFetch: () => setInnerTrigger(+new Date()),
+	};
 };
 
 export default useAxios;
