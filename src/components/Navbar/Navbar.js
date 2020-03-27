@@ -1,5 +1,6 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setIsDark } from 'AppSlice';
 import { selectFavorites } from 'views/Favorites/FavoritesSlice';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
 import StarIcon from '@material-ui/icons/Star';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+import lightBlue from '@material-ui/core/colors/lightBlue';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -27,7 +31,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	appBar: {
 		marginBottom: '20px',
-		backgroundColor: '#56a5e8',
 	},
 	button: {
 		marginRight: '10px',
@@ -46,21 +49,43 @@ const useStyles = makeStyles(theme => ({
 			marginBottom: '15px',
 		},
 	},
+	switchBase: {
+		color: lightBlue[300],
+		'&.Mui-checked': {
+			color: lightBlue[500],
+		},
+		'&.Mui-checked + .MuiSwitch-track': {
+			backgroundColor: lightBlue[500],
+		},
+	},
 }));
 
 export default function NavBar() {
+	const dispatch = useDispatch();
 	const favorites = useSelector(selectFavorites);
 	const classes = useStyles();
+
+	const handleThemeToggle = e => {
+		dispatch(setIsDark(e.target.checked));
+	};
 	return (
-		<AppBar
-			position='static'
-			classes={{
-				colorPrimary: classes.appBar,
-			}}>
+		<AppBar position='static' classes={{ root: classes.appBar }}>
 			<Toolbar className={classes.toolBar}>
 				<Typography variant='h6' className={classes.title}>
 					Herolo Weather App
 				</Typography>
+				<FormControlLabel
+					control={
+						<Switch
+							classes={{
+								switchBase: classes.switchBase,
+							}}
+							onChange={handleThemeToggle}
+							name='checkedA'
+						/>
+					}
+					label='Toggle Light/Dark theme'
+				/>
 				<NavLink
 					exact
 					to='/'
