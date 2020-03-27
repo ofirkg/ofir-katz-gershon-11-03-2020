@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import useQuery from 'app/hooks/useQuery';
 import useAxios from 'app/hooks/useAxios';
-import {
-	addToFavorties,
-	removeFromFavorites,
-	selectFavorites,
-} from 'views/Favorites/FavoritesSlice';
 import CurrentWeatherCard from 'components/CurrentWeatherCard/CurrentWeatherCard';
 import DayCard from 'components/DayCard/DayCard';
+import AddToFavoritesButton from 'components/AddToFavoritesButton/AddToFavoritesButton';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -18,10 +13,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import StarRoundedIcon from '@material-ui/icons/StarRounded';
-import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -60,10 +51,6 @@ const useStyles = makeStyles(theme => ({
 	currentWeatherErrorIcon: {
 		fontSize: '40px',
 	},
-	favoritesButton: {
-		width: '59px',
-		height: '59px',
-	},
 }));
 
 const defaultLocation = {
@@ -81,13 +68,10 @@ const apikey = 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb';
 export default function WeatherDetails() {
 	const query = useQuery();
 	const classes = useStyles();
-	const favorites = useSelector(selectFavorites);
-	const dispatch = useDispatch();
 	const [open, setOpen] = useState(false);
 	const [searchTerm, setSearchTerm] = useState('');
 	const [searchTermChangeReason, setSearchTermChangeReason] = useState('');
 	const [selectedOption, setSelectedOption] = useState(null);
-	const [isInFavorites, setIsInFavorites] = useState(false);
 
 	// autocomplete fetch
 	const { results: options, loading: autocompleteLoading } = useAxios({
@@ -160,8 +144,6 @@ export default function WeatherDetails() {
 		} else {
 			setSelectedOption(defaultLocation);
 		}
-
-		setIsInFavorites(favorites.some(fav => fav.id == defaultLocation.Key));
 	}, []);
 
 	const handleInputChange = (e, term, reason) => {
@@ -172,26 +154,6 @@ export default function WeatherDetails() {
 	const handleSelect = (e, option) => {
 		if (option) {
 			setSelectedOption(option);
-			setIsInFavorites(favorites.some(fav => fav.id == option.Key));
-		}
-	};
-
-	const toggleFavorite = () => {
-		const isCurrentLocationInFavorites = favorites.some(
-			fav => fav.id == selectedOption.Key
-		);
-		if (isCurrentLocationInFavorites) {
-			dispatch(removeFromFavorites(selectedOption.Key));
-			setIsInFavorites(false);
-		} else {
-			dispatch(
-				addToFavorties({
-					id: selectedOption.Key,
-					location: selectedOption.LocalizedName,
-					data: currentWeather && currentWeather[0],
-				})
-			);
-			setIsInFavorites(true);
 		}
 	};
 
@@ -271,30 +233,11 @@ export default function WeatherDetails() {
 								sm={6}
 								justify='flex-end'
 								alignItems='center'>
-								{isInFavorites ? (
-									<IconButton
-										onClick={toggleFavorite}
-										className={classes.favoritesButton}>
-										<Tooltip
-											title='Remove from favorties'
-											aria-label='Remove from favorties'>
-											<StarRoundedIcon
-												fontSize='large'
-												style={{ color: '#F5CC27' }}
-											/>
-										</Tooltip>
-									</IconButton>
-								) : (
-									<IconButton
-										onClick={toggleFavorite}
-										className={classes.favoritesButton}>
-										<Tooltip
-											title='Add to favorties'
-											aria-label='Add to favorties'>
-											<StarBorderRoundedIcon fontSize='large' />
-										</Tooltip>
-									</IconButton>
-								)}
+								<AddToFavoritesButton
+									locationId={selectedOption?.Key}
+									locationName={selectedOption?.LocalizedName}
+									data={currentWeather && currentWeather[0]}
+								/>
 							</Grid>
 						</Grid>
 						<Grid container item justify='center' xs={12}>
