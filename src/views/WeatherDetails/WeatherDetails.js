@@ -236,7 +236,9 @@ export default function WeatherDetails() {
 								<AddToFavoritesButton
 									locationId={selectedOption?.Key}
 									locationName={selectedOption?.LocalizedName}
-									data={currentWeather && currentWeather[0]}
+									weatherData={
+										currentWeather && currentWeather[0]
+									}
 								/>
 							</Grid>
 						</Grid>
