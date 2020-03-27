@@ -26,12 +26,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 const useStyles = makeStyles(theme => ({
 	root: {
 		alignContent: 'start',
-		height: '100%',
 	},
 	paperWrapper: {
 		padding: '20px',
 		height: '100%',
-		backgroundColor: '#ebebeb',
+		backgroundColor: theme.palette.background.paperWrapper,
 	},
 	autocompleteWrapper: {
 		marginBottom: '50px',
@@ -107,6 +106,7 @@ export default function WeatherDetails() {
 			);
 		},
 	});
+
 	// current weather fetch
 	const {
 		results: currentWeather = [],
