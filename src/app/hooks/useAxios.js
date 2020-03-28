@@ -10,6 +10,7 @@ const useAxios = ({
 	options = {},
 	trigger,
 	dispatchEffectCondition,
+	customHandler,
 }) => {
 	const [innerTrigger, setInnerTrigger] = useState(0);
 	const [loading, setLoading] = useState(false);
@@ -25,9 +26,16 @@ const useAxios = ({
 
 	const dispatchEffect = dispatchEffectCondition || (() => true);
 
+	const handler = (error, response) => {
+		if (customHandler) {
+			customHandler(error, response);
+		}
+	};
+
 	useEffect(() => {
 		if (!url || !dispatchEffect()) return;
 		if (typeof outerTrigger === 'undefined' && !innerTrigger) return;
+		handler(null, null);
 		setLoading(true);
 		const source = CancelToken.source();
 
@@ -39,10 +47,12 @@ const useAxios = ({
 					cancelToken: source.token,
 					...options,
 				});
+				handler(null, result.data);
 				setResults(result.data);
 				setLoading(false);
 				setError(false);
 			} catch (e) {
+				handler(e, null);
 				if (axios.isCancel(e)) {
 					console.error('fetch cancelled by user');
 					setError(false);
@@ -60,7 +70,7 @@ const useAxios = ({
 		results,
 		error,
 		loading,
-		reFetch: () => setInnerTrigger(+new Date()),
+		triggerFetch: () => setInnerTrigger(+new Date()),
 	};
 };
 
