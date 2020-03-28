@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import useQuery from 'app/hooks/useQuery';
 import useAxios from 'app/hooks/useAxios';
+import useGeolocation from 'app/hooks/useGeolocation';
 import CurrentWeatherCard from 'components/CurrentWeatherCard/CurrentWeatherCard';
 import DayCard from 'components/DayCard/DayCard';
 import AddToFavoritesButton from 'components/AddToFavoritesButton/AddToFavoritesButton';
@@ -72,6 +73,33 @@ export default function WeatherDetails() {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [searchTermChangeReason, setSearchTermChangeReason] = useState('');
 	const [selectedOption, setSelectedOption] = useState(null);
+	const { latitude, longitude, error } = useGeolocation();
+
+	const defaultWeatherResultHandler = (error, response) => {
+		if (response) {
+			const { Key, LocalizedName } = response;
+			setSelectedOption({ Key, LocalizedName });
+		} else {
+			setSelectedOption(defaultLocation);
+		}
+	};
+
+	// default weather location fetch
+	const {
+		results: defaultWeatherLocation,
+		loading: defaultWeatherLocationLoading,
+		triggerFetch: fetchDefaultWeatherLocation,
+	} = useAxios({
+		url: '/locations/v1/cities/geoposition/search',
+		options: {
+			params: {
+				apikey,
+				q: `${latitude},${longitude}`,
+			},
+		},
+		customHandler: defaultWeatherResultHandler,
+		trigger: latitude || longitude,
+	});
 
 	// autocomplete fetch
 	const { results: options, loading: autocompleteLoading } = useAxios({
@@ -141,9 +169,9 @@ export default function WeatherDetails() {
 				Key: idQueryParam,
 				LocalizedName: locationQueryParam,
 			});
-		} else {
-			setSelectedOption(defaultLocation);
+			return;
 		}
+		fetchDefaultWeatherLocation();
 	}, []);
 
 	const handleInputChange = (e, term, reason) => {
