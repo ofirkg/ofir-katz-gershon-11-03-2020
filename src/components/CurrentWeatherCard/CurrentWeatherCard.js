@@ -6,6 +6,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
 import WeatherIcons from 'assets/WeatherIcons/';
 import Typography from '@material-ui/core/Typography';
+import TemperatureToggle from 'components/TemperatureToggle/TemperatureToggle';
 
 const useStyles = makeStyles({
 	root: {
@@ -69,7 +70,7 @@ export default function CurrentWeatherCard({
 							/>
 						) : (
 							<Typography variant='subtitle2'>
-								{Math.round(temperature)}&deg;
+								<TemperatureToggle metricValue={temperature} />
 							</Typography>
 						)
 					}

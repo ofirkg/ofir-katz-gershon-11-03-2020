@@ -7,6 +7,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import ImageOutlinedIcon from '@material-ui/icons/ImageOutlined';
 import WeatherIcons from 'assets/WeatherIcons/';
 import Typography from '@material-ui/core/Typography';
+import TemperatureToggle from 'components/TemperatureToggle/TemperatureToggle';
 
 const useStyles = makeStyles({
 	root: {
@@ -140,20 +141,22 @@ export default function DayCard({ loading = true, error, data = defaultData }) {
 							) : (
 								<>
 									<Typography variant='h3' component='span'>
-										{Math.round(
-											data.Temperature.Maximum.Value
-										)}
-										&deg;
+										<TemperatureToggle
+											metricValue={
+												data.Temperature.Maximum.Value
+											}
+										/>
 									</Typography>
 									<Typography
 										color='textSecondary'
 										variant='h5'
 										component='span'>
 										/
-										{Math.round(
-											data.Temperature.Minimum.Value
-										)}
-										&deg;
+										<TemperatureToggle
+											metricValue={
+												data.Temperature.Minimum.Value
+											}
+										/>
 									</Typography>
 								</>
 							)}
