@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setIsDark } from 'AppSlice';
 import { selectFavorites } from 'views/Favorites/FavoritesSlice';
@@ -13,6 +13,10 @@ import StarIcon from '@material-ui/icons/Star';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import lightBlue from '@material-ui/core/colors/lightBlue';
+import SettingsIcon from '@material-ui/icons/Settings';
+import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -64,28 +68,27 @@ export default function NavBar() {
 	const dispatch = useDispatch();
 	const favorites = useSelector(selectFavorites);
 	const classes = useStyles();
+	const [anchorEl, setAnchorEl] = useState(null);
 
 	const handleThemeToggle = e => {
 		dispatch(setIsDark(e.target.checked));
 	};
+
+	const handleSettingsBtnClick = e => {
+		setAnchorEl(e.currentTarget);
+	};
+
+	const handleCloseSettingsMenu = () => {
+		setAnchorEl(null);
+	};
+
 	return (
 		<AppBar position='static' classes={{ root: classes.appBar }}>
 			<Toolbar className={classes.toolBar}>
 				<Typography variant='h6' className={classes.title}>
 					Herolo Weather App
 				</Typography>
-				<FormControlLabel
-					control={
-						<Switch
-							classes={{
-								switchBase: classes.switchBase,
-							}}
-							onChange={handleThemeToggle}
-							name='checkedA'
-						/>
-					}
-					label='Toggle Light/Dark theme'
-				/>
+
 				<NavLink
 					exact
 					to='/'
@@ -111,6 +114,30 @@ export default function NavBar() {
 						</Badge>
 					</Button>
 				</NavLink>
+				<IconButton onClick={handleSettingsBtnClick}>
+					<SettingsIcon />
+				</IconButton>
+				<Menu
+					anchorEl={anchorEl}
+					keepMounted
+					open={Boolean(anchorEl)}
+					onClose={handleCloseSettingsMenu}>
+					<MenuItem>
+						<FormControlLabel
+							control={
+								<Switch
+									classes={{
+										switchBase: classes.switchBase,
+									}}
+									onChange={handleThemeToggle}
+									name='checkedA'
+								/>
+							}
+							label='Light/Dark theme'
+						/>
+					</MenuItem>
+					<MenuItem>temp toggle</MenuItem>
+				</Menu>
 			</Toolbar>
 		</AppBar>
 	);
