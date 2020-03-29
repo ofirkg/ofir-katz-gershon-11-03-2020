@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setIsDark } from 'AppSlice';
 import { selectFavorites } from 'views/Favorites/FavoritesSlice';
+import { setTemperatureScale } from 'components/TemperatureToggle/TemperatureToggleSlice';
 import { NavLink } from 'react-router-dom';
+
+import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -62,6 +65,9 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: lightBlue[500],
 		},
 	},
+	tempToggleLabelRoot: {
+		marginLeft: '10px',
+	},
 }));
 
 export default function NavBar() {
@@ -80,6 +86,11 @@ export default function NavBar() {
 
 	const handleCloseSettingsMenu = () => {
 		setAnchorEl(null);
+	};
+
+	const handleTemperatureToggle = e => {
+		if (e.target.checked) dispatch(setTemperatureScale('f'));
+		else dispatch(setTemperatureScale('c'));
 	};
 
 	return (
@@ -130,13 +141,36 @@ export default function NavBar() {
 										switchBase: classes.switchBase,
 									}}
 									onChange={handleThemeToggle}
-									name='checkedA'
+									name='themeToggle'
 								/>
 							}
-							label='Light/Dark theme'
+							label='Light/Dark Theme'
 						/>
 					</MenuItem>
-					<MenuItem>temp toggle</MenuItem>
+					<MenuItem>
+						<Grid
+							component='label'
+							container
+							alignItems='center'
+							spacing={0}>
+							<Grid item>&deg;C</Grid>
+							<Grid item>
+								<Switch
+									classes={{
+										switchBase: classes.switchBase,
+									}}
+									onChange={handleTemperatureToggle}
+									name='temperatureToggle'
+								/>
+							</Grid>
+							<Grid item>&#8457;</Grid>
+							<Grid
+								item
+								classes={{ root: classes.tempToggleLabelRoot }}>
+								Temperature Toggle
+							</Grid>
+						</Grid>
+					</MenuItem>
 				</Menu>
 			</Toolbar>
 		</AppBar>
