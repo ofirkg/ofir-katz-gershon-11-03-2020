@@ -5,7 +5,6 @@ import { selectThemeMode } from 'AppSlice';
 import NavBar from 'components/Navbar/Navbar';
 import WeatherDetails from 'views/WeatherDetails/WeatherDetails';
 import Favorites from 'views/Favorites/Favorites';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {
 	createMuiTheme,
 	ThemeProvider,
@@ -41,18 +40,16 @@ const MUIContainer = ({ children }) => {
 
 function App() {
 	const isDarkTheme = useSelector(selectThemeMode);
-	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-	const isDark = prefersDarkMode || isDarkTheme;
 	const myTheme = React.useMemo(
 		() =>
 			createMuiTheme({
 				palette: {
-					type: isDark ? 'dark' : 'light',
+					type: isDarkTheme ? 'dark' : 'light',
 					background: {
-						paperWrapper: isDark ? '#303030' : '#ebebeb',
+						paperWrapper: isDarkTheme ? '#303030' : '#ebebeb',
 					},
 					primary: {
-						main: isDark ? lightBlue[900] : lightBlue[500],
+						main: isDarkTheme ? lightBlue[900] : lightBlue[500],
 					},
 				},
 				overrides: {
@@ -63,7 +60,7 @@ function App() {
 					},
 				},
 			}),
-		[isDark]
+		[isDarkTheme]
 	);
 
 	return (
