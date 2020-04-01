@@ -76,11 +76,9 @@ export default function WeatherDetails() {
 	const { latitude, longitude, error } = useGeolocation();
 
 	const defaultWeatherResultHandler = (error, response) => {
-		if (response) {
+		if (response && !query.get('id')) {
 			const { Key, LocalizedName } = response;
 			setSelectedOption({ Key, LocalizedName });
-		} else {
-			setSelectedOption(defaultLocation);
 		}
 	};
 
