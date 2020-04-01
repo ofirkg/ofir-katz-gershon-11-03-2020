@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/ofir-katz-gershon-11-03-2020/static/css/main.69eda509.chunk.css",
-    "main.js": "/ofir-katz-gershon-11-03-2020/static/js/main.026c35f5.chunk.js",
-    "main.js.map": "/ofir-katz-gershon-11-03-2020/static/js/main.026c35f5.chunk.js.map",
+    "main.js": "/ofir-katz-gershon-11-03-2020/static/js/main.278ceaaf.chunk.js",
+    "main.js.map": "/ofir-katz-gershon-11-03-2020/static/js/main.278ceaaf.chunk.js.map",
     "runtime-main.js": "/ofir-katz-gershon-11-03-2020/static/js/runtime-main.0b33fd54.js",
     "runtime-main.js.map": "/ofir-katz-gershon-11-03-2020/static/js/runtime-main.0b33fd54.js.map",
     "static/js/2.0b613dae.chunk.js": "/ofir-katz-gershon-11-03-2020/static/js/2.0b613dae.chunk.js",
     "static/js/2.0b613dae.chunk.js.map": "/ofir-katz-gershon-11-03-2020/static/js/2.0b613dae.chunk.js.map",
     "index.html": "/ofir-katz-gershon-11-03-2020/index.html",
-    "precache-manifest.1ead431c4c8be6e1acb50bd812e96256.js": "/ofir-katz-gershon-11-03-2020/precache-manifest.1ead431c4c8be6e1acb50bd812e96256.js",
+    "precache-manifest.3095a7c6a022eca97d17577b22f5bcb3.js": "/ofir-katz-gershon-11-03-2020/precache-manifest.3095a7c6a022eca97d17577b22f5bcb3.js",
     "service-worker.js": "/ofir-katz-gershon-11-03-2020/service-worker.js",
     "static/css/main.69eda509.chunk.css.map": "/ofir-katz-gershon-11-03-2020/static/css/main.69eda509.chunk.css.map",
     "static/js/2.0b613dae.chunk.js.LICENSE.txt": "/ofir-katz-gershon-11-03-2020/static/js/2.0b613dae.chunk.js.LICENSE.txt",
@@ -21,6 +21,6 @@
     "static/js/runtime-main.0b33fd54.js",
     "static/js/2.0b613dae.chunk.js",
     "static/css/main.69eda509.chunk.css",
-    "static/js/main.026c35f5.chunk.js"
+    "static/js/main.278ceaaf.chunk.js"
   ]
 }
