@@ -20,6 +20,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Hidden from '@material-ui/core/Hidden';
+import HomeIcon from '@material-ui/icons/Home';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -30,11 +32,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	title: {
 		flexGrow: 1,
-		[theme.breakpoints.down('xs')]: {
-			flex: '0 0 100%',
-			fontSize: '1rem',
-			textAlign: 'center',
-		},
 	},
 	appBar: {
 		marginBottom: '20px',
@@ -45,16 +42,10 @@ const useStyles = makeStyles(theme => ({
 	link: {
 		color: 'inherit',
 		textDecoration: 'none',
+		marginRight: '10px',
 	},
 	activeLink: {
 		color: 'yellow',
-	},
-	toolBar: {
-		[theme.breakpoints.down('xs')]: {
-			justifyContent: 'space-between',
-			flexWrap: 'wrap',
-			marginBottom: '15px',
-		},
 	},
 	switchBase: {
 		color: lightBlue[300],
@@ -96,38 +87,61 @@ export default function NavBar() {
 	return (
 		<AppBar position='static' classes={{ root: classes.appBar }}>
 			<Toolbar className={classes.toolBar}>
+				<Hidden smUp>
+					<NavLink
+						exact
+						to='/'
+						className={classes.link}
+						activeClassName={classes.activeLink}>
+						<HomeIcon />
+					</NavLink>
+				</Hidden>
 				<Typography variant='h6' className={classes.title}>
 					Herolo Weather App
 				</Typography>
-
-				<NavLink
-					exact
-					to='/'
-					className={classes.link}
-					activeClassName={classes.activeLink}>
-					<Button
-						classes={{ root: classes.button }}
-						color='inherit'
-						variant='outlined'>
-						Weather Details
-					</Button>
-				</NavLink>
-				<NavLink
-					to='/Favorites'
-					className={classes.link}
-					activeClassName={classes.activeLink}>
-					<Button color='inherit' variant='outlined'>
-						Favorites
+				<Hidden xsDown>
+					<NavLink
+						exact
+						to='/'
+						className={classes.link}
+						activeClassName={classes.activeLink}>
+						<Button
+							classes={{ root: classes.button }}
+							color='inherit'
+							variant='outlined'>
+							Weather Details
+						</Button>
+					</NavLink>
+					<NavLink
+						to='/Favorites'
+						className={classes.link}
+						activeClassName={classes.activeLink}>
+						<Button color='inherit' variant='outlined'>
+							Favorites
+							<Badge
+								badgeContent={favorites.length}
+								color='secondary'>
+								<StarIcon />
+							</Badge>
+						</Button>
+					</NavLink>
+				</Hidden>
+				<Hidden smUp>
+					<NavLink
+						to='/Favorites'
+						className={classes.link}
+						activeClassName={classes.activeLink}>
 						<Badge
 							badgeContent={favorites.length}
 							color='secondary'>
 							<StarIcon />
 						</Badge>
-					</Button>
-				</NavLink>
+					</NavLink>
+				</Hidden>
 				<IconButton onClick={handleSettingsBtnClick}>
 					<SettingsIcon />
 				</IconButton>
+
 				<Menu
 					anchorEl={anchorEl}
 					keepMounted
