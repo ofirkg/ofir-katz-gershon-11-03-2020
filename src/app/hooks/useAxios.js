@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://dataservice.accuweather.com';
+// axios.defaults.baseURL = 'https://dataservice.accuweather.com';
+axios.defaults.baseURL = 'http://localhost:3001';
 const { CancelToken } = axios;
+const apikey = 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb';
 
 const useAxios = ({
 	url = '',
@@ -46,6 +48,10 @@ const useAxios = ({
 					method,
 					cancelToken: source.token,
 					...options,
+					params: {
+						...options.params,
+						apikey,
+					},
 				});
 				handler(null, result.data);
 				setResults(result.data);
