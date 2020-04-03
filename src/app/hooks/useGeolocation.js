@@ -21,7 +21,7 @@ export default function useGeolocation() {
 			setError('Geolocation is not supported');
 			return;
 		}
-		geo.getCurrentPosition(success, onError);
+		geo.getCurrentPosition(success, onError, { timeout: 1000 });
 	}, []);
 
 	return { ...position, error };
