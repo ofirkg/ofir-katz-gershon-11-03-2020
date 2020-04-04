@@ -17,6 +17,8 @@ import lightBlue from '@material-ui/core/colors/lightBlue';
 const useStyles = makeStyles(theme => {
 	return {
 		root: {
+			display: 'flex',
+			flexFlow: 'column',
 			backgroundColor: theme.palette.background.paper,
 			height: '100%',
 			overflow: 'auto',
