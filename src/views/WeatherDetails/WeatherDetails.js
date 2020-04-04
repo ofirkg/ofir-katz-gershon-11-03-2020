@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	paperWrapper: {
 		padding: '20px',
+		marginBottom: '50px',
 		height: '100%',
 		backgroundColor: theme.palette.background.paperWrapper,
 	},
