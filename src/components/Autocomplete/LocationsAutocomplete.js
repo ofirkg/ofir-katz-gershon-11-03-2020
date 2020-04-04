@@ -13,7 +13,6 @@ export default function Autocomplete({ handleSelect }) {
 	// autocomplete fetch
 	const { results: options, loading } = useAxios({
 		url: '/locations/v1/cities/autocomplete',
-		// url: '/autocomplete',
 		options: {
 			params: {
 				q: searchTerm,

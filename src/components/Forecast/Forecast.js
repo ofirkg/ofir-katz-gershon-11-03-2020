@@ -11,8 +11,7 @@ export default function Forecast({ selectedOption }) {
 		error: forecastError,
 		loading: forecastLoading,
 	} = useAxios({
-		// url: `/forecasts/v1/daily/5day/${selectedOption?.Key}`,
-		url: selectedOption ? `/forecast` : '',
+		url: `/forecasts/v1/daily/5day/${selectedOption?.Key}`,
 		options: {
 			params: {
 				metric: true,
