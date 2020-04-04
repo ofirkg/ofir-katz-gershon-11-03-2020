@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/ofir-katz-gershon-11-03-2020/precache-manifest.3095a7c6a022eca97d17577b22f5bcb3.js"
+  "/ofir-katz-gershon-11-03-2020/precache-manifest.8952ba9d6063269fb45f58775d81e943.js"
 );
 
 self.addEventListener('message', (event) => {
