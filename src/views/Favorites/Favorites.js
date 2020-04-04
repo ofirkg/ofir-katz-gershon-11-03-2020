@@ -20,6 +20,10 @@ const useStyles = makeStyles(theme => ({
 		height: '100%',
 		backgroundColor: theme.palette.background.paperWrapper,
 	},
+	emptyText: {
+		color: '#fff',
+		textShadow: '1px -1px 1px #b5b5b5',
+	},
 }));
 
 export default function Favorites() {
@@ -37,8 +41,8 @@ export default function Favorites() {
 			</Grid>
 			<Grid item xs={10}>
 				<Paper className={classes.paperWrapper}>
-					<Grid container spacing={3}>
-						{favorites &&
+					<Grid container justify='center' spacing={3}>
+						{favorites.length > 0 ? (
 							favorites.map(fav => {
 								return (
 									<Grid
@@ -57,7 +61,14 @@ export default function Favorites() {
 										</Link>
 									</Grid>
 								);
-							})}
+							})
+						) : (
+							<Typography
+								className={classes.emptyText}
+								variant='h3'>
+								Empty
+							</Typography>
+						)}
 					</Grid>
 				</Paper>
 			</Grid>
