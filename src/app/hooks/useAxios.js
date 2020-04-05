@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// axios.defaults.baseURL = 'https://dataservice.accuweather.com';
-axios.defaults.baseURL = 'http://localhost:3001';
+axios.defaults.baseURL = process.env.REACT_APP_BASEURL;
+const apikey = process.env.REACT_APP_APIKEY;
 const { CancelToken } = axios;
-const apikey = 'ZykvKfNQRGnZSPw9DdilEwqEzni3OBqb';
 
 const useAxios = ({
 	url = '',
