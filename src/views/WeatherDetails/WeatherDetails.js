@@ -84,7 +84,8 @@ export default function WeatherDetails() {
 		loading: defaultWeatherLocationLoading,
 		triggerFetch: fetchDefaultWeatherLocation,
 	} = useAxios({
-		url: '/locations/v1/cities/geoposition/search',
+		// url: '/locations/v1/cities/geoposition/search',
+		url: '/geoposition',
 		options: {
 			params: {
 				q: `${latitude},${longitude}`,
@@ -101,7 +102,8 @@ export default function WeatherDetails() {
 		error: currentWeatherError,
 		loading: currentWeatherLoading,
 	} = useAxios({
-		url: `/currentconditions/v1/${selectedOption?.Key}`,
+		// url: `/currentconditions/v1/${selectedOption?.Key}`,
+		url: `/currentWeather`,
 		trigger: selectedOption,
 		dispatchEffectCondition: () => {
 			return !!selectedOption;
